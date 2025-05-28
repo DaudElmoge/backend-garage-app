@@ -21,3 +21,4 @@ app.add_middleware(
 @app.get("/")
 def index():
     return {"message":"Welcome to AWAG garage management"}
+
