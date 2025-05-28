@@ -7,6 +7,15 @@ from datetime import datetime
 
 engine = create_engine("sqlite:///garage.db",echo=True)
 
+Session = sessionmaker(bind=engine)
+
+def get_db():
+    session = Session()
+    try:
+        yield session
+    finally:
+        session.close()
+
 class Base(DeclarativeBase):
     pass
 
