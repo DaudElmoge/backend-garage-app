@@ -67,3 +67,4 @@ class Mechanic(Base):
 
     def __repr__(self):
         return f"<Mechanic(name='{self.name}')>"
+    
