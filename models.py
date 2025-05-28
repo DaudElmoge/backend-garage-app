@@ -1,3 +1,14 @@
+from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy import Column, Integer, String,Text,ForeignKey,Date,Time,create_engine
+from sqlalchemy.orm import sessionmaker
+from datetime import datetime
+
+
+engine = create_engine("sqlite:///garage.db",echo=True)
+
+class Base(DeclarativeBase):
+    pass
+
 class Customer(Base):
     __tablename__ = "customers"
 
