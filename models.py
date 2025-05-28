@@ -51,3 +51,19 @@ class RepairRecord(Base):
 
     customer_id = Column(Integer, ForeignKey("customers.id"))
     customer = relationship("Customer", back_populates="repairs")   
+
+class CarMake(Base):
+    __tablename__ = "car_makes"
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+
+    def _repr_(self):
+        return f"<CarMake(name='{self.name}')>"
+    
+class Mechanic(Base):
+    __tablename__ = "mechanics"
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+
+    def __repr__(self):
+        return f"<Mechanic(name='{self.name}')>"
