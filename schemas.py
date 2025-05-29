@@ -19,6 +19,9 @@ class ServiceRecordSchema(BaseModel):
     comments: str
     customer_id: int
 
+    class Config:
+        orm_mode = True
+
 class RepairRecordSchema(BaseModel):
     vehicle_number: str
     #customer_name: str
@@ -31,6 +34,9 @@ class RepairRecordSchema(BaseModel):
     repair_time: time
     comments: str
     customer_id: int
+
+    class Config:
+        orm_mode = True
 
 class CarMakeSchema(BaseModel):
     id:int

@@ -45,6 +45,27 @@ def search_customer(phone:str,db:session=Depends(get_db)):
     if not customer:
         raise HTTPException(status_code=404, detail="Customer not found")
     return customer
+
+@app.get("/customers/history/")
+def get_history_customer(phone: str, db: session = Depends(get_db)):
+    customer = db.query(Customer).filter(Customer.phone == phone).first()
+    if not customer:
+        raise HTTPException(status_code=404, detail="Customer not found")
+
+    # Fetch all service and repair records for this customer
+    services = db.query(ServiceRecord).filter(ServiceRecord.customer_id == customer.id).all()
+    repairs = db.query(RepairRecord).filter(RepairRecord.customer_id == customer.id).all()
+
+    # Combine and sort by date (assuming both have a `.date` field)
+    history = services + repairs
+    history_sorted = sorted(
+    history,
+    key=lambda x: getattr(x, "service_date", None) or getattr(x, "repair_date", None),
+    reverse=True
+)
+
+
+    return history_sorted
     
 @app.delete("/customers/{customer_id}")
 def delete_customer(customer_id: int, db: session=Depends(get_db)):
