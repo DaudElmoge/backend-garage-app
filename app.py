@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import session
 from models import Base, engine, get_db, Customer, ServiceRecord, RepairRecord, CarMake, Mechanic
-from schemas import CustomerSchema, ServiceRecordSchema ,RepairRecordSchema
+from schemas import CustomerSchema, ServiceRecordSchema ,RepairRecordSchema,CarMakeSchema,MechanicSchema
 
 Base.metadata.create_all(bind=engine)
 
@@ -97,5 +97,8 @@ def delete_repair(repair_id: int, db: session=Depends(get_db)):
 def get_car_makes (db: session=Depends(get_db)):
     return db.query(CarMake).all()
 
-
+#Mechanics
+@app.get("/mechanics")
+def get_mechanics (db: session=Depends(get_db)):
+    return db.query(Mechanic).all()
                  
