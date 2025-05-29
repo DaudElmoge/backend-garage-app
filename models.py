@@ -77,3 +77,20 @@ class Mechanic(Base):
     def __repr__(self):
         return f"<Mechanic(name='{self.name}')>"
     
+class ServiceType(Base):
+    __tablename__ = "service_types"
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+
+    def __repr__(self):
+        return f"<ServiceType(name='{self.name}')>"
+    
+class RepairType(Base):
+    __tablename__ = "repair_types"
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+
+    def __repr__(self):
+        return f"<RepairType(name='{self.name}')>"
+
+    
