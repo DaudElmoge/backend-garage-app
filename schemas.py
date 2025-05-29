@@ -8,6 +8,8 @@ class CustomerSchema(BaseModel):
 
 class ServiceRecordSchema(BaseModel):
     vehicle_number: str
+    #customer_name: str
+    #customer_phone:str
     car_make: str
     car_model: str
     mechanic_name: str
@@ -19,6 +21,8 @@ class ServiceRecordSchema(BaseModel):
 
 class RepairRecordSchema(BaseModel):
     vehicle_number: str
+    #customer_name: str
+    #customer_phone:str
     car_make: str
     car_model: str
     mechanic_name: str

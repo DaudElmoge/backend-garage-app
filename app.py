@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import session
 from models import Base, engine, get_db, Customer, ServiceRecord, RepairRecord, CarMake, Mechanic
 from schemas import CustomerSchema, ServiceRecordSchema ,RepairRecordSchema,CarMakeSchema,MechanicSchema
+from seed import seed_data
 
 Base.metadata.create_all(bind=engine)
 
@@ -16,6 +17,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
+
+@app.on_event("startup")
+def on_startup():
+    seed_data()
 
 #Routes definition
 @app.get("/")
