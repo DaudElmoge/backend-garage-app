@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import session
 from models import Base, engine, get_db, Customer, ServiceRecord, RepairRecord, CarMake, Mechanic
-from schemas import CustomerSchema,ServiceRecordSchema
+from schemas import CustomerSchema, ServiceRecordSchema ,RepairRecordSchema
 
 Base.metadata.create_all(bind=engine)
 
@@ -70,4 +70,27 @@ def delete_service (service_id: int, db: session=Depends(get_db)):
     db.delete(service)
     db.commit()
     return {"message":"Service deleted"}
+
+#Repair Records
+@app.post("/repairs")
+def add_repair (repair: RepairRecordSchema, db: session=Depends(get_db)):
+    new_repair = RepairRecord(**repair.dict())
+    db.add(new_repair)
+    db.commit()
+    return {"message":"Repair record added successfully"}
+
+@app.get("/repairs")
+def get_repairs (db: session=Depends(get_db)):
+    return db.query(RepairRecord).all()
+
+@app.delete("/repairs/{repair_id}")
+def delete_repair(repair_id: int, db: session=Depends(get_db)):
+    repair = db.query(RepairRecord).filter(RepairRecord.id==repair_id).first()
+    if not repair:
+        raise HTTPException(status_code=404, detail="Repair not found")
+    db.delete(repair)
+    db.commit()
+    return {"message": "Repair deleted"}
+
+
                  
