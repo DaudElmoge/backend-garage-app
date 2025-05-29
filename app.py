@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import session
 from models import Base, engine, get_db, Customer, ServiceRecord, RepairRecord, CarMake, Mechanic
 from schemas import CustomerSchema, ServiceRecordSchema ,RepairRecordSchema,CarMakeSchema,MechanicSchema
-from seed import seed_data
+from seed import seed_data,RepairType,ServiceType
 
 Base.metadata.create_all(bind=engine)
 
@@ -12,7 +12,7 @@ app = FastAPI()
 #Frontend requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173/"],
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
@@ -77,12 +77,13 @@ def delete_service (service_id: int, db: session=Depends(get_db)):
     return {"message":"Service deleted"}
 
 #Repair Records
-@app.post("/repairs")
+@app.post("/repairs",status_code=201)
 def add_repair (repair: RepairRecordSchema, db: session=Depends(get_db)):
     new_repair = RepairRecord(**repair.dict())
     db.add(new_repair)
     db.commit()
-    return {"message":"Repair record added successfully"}
+    db.refresh(new_repair)
+    return {"message":"Repair record added successfully", "id":new_repair.id}
 
 @app.get("/repairs")
 def get_repairs (db: session=Depends(get_db)):
@@ -107,3 +108,10 @@ def get_car_makes (db: session=Depends(get_db)):
 def get_mechanics (db: session=Depends(get_db)):
     return db.query(Mechanic).all()
                  
+@app.get("/service-types")
+def get_service_types(db: session = Depends(get_db)):
+    return db.query(ServiceType).all()
+
+@app.get("/repair-types")
+def get_repair_types(db: session = Depends(get_db)):
+    return db.query(RepairType).all()
