@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import session
 from models import Base, engine, get_db, Customer, ServiceRecord, RepairRecord, CarMake, Mechanic
-from schemas import CustomerSchema
+from schemas import CustomerSchema,ServiceRecordSchema
 
 Base.metadata.create_all(bind=engine)
 
@@ -51,3 +51,10 @@ def delete_customer(customer_id: int, db: session=Depends(get_db)):
     return {"message":"Customer deleted successfully"}
 
 #Service Records
+@app.post("/services")
+def add_service(service: ServiceRecordSchema,db: session=Depends(get_db)):
+    new_service = ServiceRecord(**service.dict())
+    db.add(new_service)
+    db.commit()
+    return {"message":"Service record added successfully"}
+
