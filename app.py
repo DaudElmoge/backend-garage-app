@@ -92,5 +92,10 @@ def delete_repair(repair_id: int, db: session=Depends(get_db)):
     db.commit()
     return {"message": "Repair deleted"}
 
+#Car Makes
+@app.get("/car-makes")
+def get_car_makes (db: session=Depends(get_db)):
+    return db.query(CarMake).all()
+
 
                  
