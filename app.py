@@ -58,3 +58,16 @@ def add_service(service: ServiceRecordSchema,db: session=Depends(get_db)):
     db.commit()
     return {"message":"Service record added successfully"}
 
+@app.get("/services")
+def get_services(db: session=Depends(get_db)):
+    return db.query(ServiceRecord).all()
+
+@app.delete("/services/{service_id}")
+def delete_service (service_id: int, db: session=Depends(get_db)):
+    service= db.query(ServiceRecord).filter(ServiceRecord.id == service_id).first()
+    if not service:
+        raise HTTPException(status_code=404, detail="Service not found")
+    db.delete(service)
+    db.commit()
+    return {"message":"Service deleted"}
+                 
