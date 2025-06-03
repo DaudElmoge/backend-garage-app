@@ -51,3 +51,5 @@ This backend supports the following main features:
 - ✅ I can get full service/repair history by customer ID
 - ✅ I can search for a customer using their phone number
 
+### 📽️ Demo Video  
+[Click here to watch the demo](https://drive.google.com/file/d/1RzLfnG-gvWl3dXYDLGMUQ1yyx_3NvMSp/view?usp=sharing)
